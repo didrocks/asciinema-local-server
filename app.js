@@ -57,4 +57,9 @@ app.use(function (err, req, res, next) {
   });
 });
 
+app.on_socketconnection = function (socket) {
+  debug('a user connected, sending ' + filescan.getAsciinemaFiles());
+  socket.emit('new asciifiles', filescan.getAsciinemaFiles());
+};
+
 module.exports = app;

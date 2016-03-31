@@ -21,11 +21,22 @@ var getAsciinemaFiles = function (err, files) {
 
   files.forEach(function (file) {
     if (path.extname(file) === '.asciinema')
-      newAsciifiles.add(file);
+      newAsciifiles.push(file);
   });
 
-  // switch with new file list
+  // Only process if file list is now different
+  if ((newAsciifiles.length == asciifiles.length) &&
+       newAsciifiles.every(function (element, index) {
+         return element === asciifiles[index];
+       })
+     ) {
+    return;
+  }
+
+  debug('New files on disk');
   asciifiles = newAsciifiles;
+  var app = require('./app');
+  app.io.emit('new asciifiles', asciifiles);
 };
 
 setInterval(function () {
@@ -33,4 +44,6 @@ setInterval(function () {
   fs.readdir(asciinemaDir, getAsciinemaFiles);
 }, 10000);
 
-module.exports = asciifiles;
+exports.getAsciinemaFiles = function () {
+  return asciifiles;
+};
