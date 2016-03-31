@@ -1,3 +1,4 @@
+var debug = require('debug')('asciinema-local-server:app');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -58,7 +59,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.on_socketconnection = function (socket) {
-  debug('a user connected, sending ' + filescan.getAsciinemaFiles());
+  debug('A new session has connected, sending ' + filescan.getAsciinemaFiles());
   socket.emit('new asciifiles', filescan.getAsciinemaFiles());
 };
 
