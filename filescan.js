@@ -47,3 +47,5 @@ setInterval(function () {
 exports.getAsciinemaFiles = function () {
   return asciifiles;
 };
+
+exports.asciinemaDir = asciinemaDir;
