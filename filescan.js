@@ -2,7 +2,10 @@ var debug = require('debug')('asciinema-local-server:filescan');
 var fs = require('fs');
 var path = require('path');
 
+const ASCIINEMA_SUFFIX = '.asciinema';
+
 var asciifiles = [];
+var asciifileNames = [];
 
 // check regularly the ubuntu user directory which can contain asciinema files
 var asciinemaDir;
@@ -14,26 +17,48 @@ catch (ex) {
 }
 
 var getAsciinemaFiles = function (err, files) {
-  var newAsciifiles = [];
+  var newAsciifileNames = [];
   if (err) {
     throw err;
   }
 
   files.forEach(function (file) {
-    if (path.extname(file) === '.asciinema')
-      newAsciifiles.push(file);
+    if (path.extname(file) === ASCIINEMA_SUFFIX)
+      newAsciifileNames.push(file);
   });
 
   // Only process if file list is now different
-  if ((newAsciifiles.length == asciifiles.length) &&
-       newAsciifiles.every(function (element, index) {
-         return element === asciifiles[index];
+  if ((newAsciifileNames.length == asciifileNames.length) &&
+       newAsciifileNames.every(function (element, index) {
+         return element === asciifileNames[index];
        })
      ) {
     return;
   }
 
   debug('New files on disk');
+  newAsciifiles = [];
+
+  // sort files in chronological order
+  newAsciifileNames.sort(function (a, b) {
+    return fs.statSync(path.join(asciinemaDir, a)).mtime.getTime() -
+      fs.statSync(path.join(asciinemaDir, b)).mtime.getTime();
+  });
+
+  // Extract title and date metadata from file name (Do not open them as they can be large)
+  var regexp = new RegExp('(.*)_([0-9:]*)\.([0-9\-]*)\.asciinema');
+  newAsciifileNames.forEach(function (file) {
+    var match = regexp.exec(file);
+    newAsciifiles.push({
+      filename: file,
+      title: match[1].split('_').join(' '),
+      date: match[3] + ' (' + match[2] + ')',
+    });
+  });
+
+  debug(newAsciifiles);
+
+  asciifileNames = newAsciifileNames;
   asciifiles = newAsciifiles;
   var app = require('./app');
   app.io.emit('new asciifiles', asciifiles);
