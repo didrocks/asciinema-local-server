@@ -36,13 +36,14 @@ var getAsciinemaFiles = function (err, files) {
     return;
   }
 
-  debug('New files on disk');
+  debug('New files on disk: ' + newAsciifileNames);
+  asciifileNames = newAsciifileNames.slice(); // assign now to keep same file system order
   newAsciifiles = [];
 
   // sort files in chronological order
   newAsciifileNames.sort(function (a, b) {
-    return fs.statSync(path.join(asciinemaDir, a)).mtime.getTime() -
-      fs.statSync(path.join(asciinemaDir, b)).mtime.getTime();
+    return fs.statSync(path.join(asciinemaDir, b)).mtime.getTime() -
+      fs.statSync(path.join(asciinemaDir, a)).mtime.getTime();
   });
 
   // Extract title and date metadata from file name (Do not open them as they can be large)
@@ -56,9 +57,6 @@ var getAsciinemaFiles = function (err, files) {
     });
   });
 
-  debug(newAsciifiles);
-
-  asciifileNames = newAsciifileNames;
   asciifiles = newAsciifiles;
   var app = require('./app');
   app.io.emit('new asciifiles', asciifiles);
