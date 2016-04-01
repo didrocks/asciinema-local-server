@@ -61,7 +61,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.on_socketconnection = function (socket) {
-  debug('A new session has connected, sending ' + filescan.getAsciinemaFiles());
+  debug('A new session has started, sending ' + filescan.getAsciinemaFiles());
   socket.emit('new asciifiles', filescan.getAsciinemaFiles());
 };
 
