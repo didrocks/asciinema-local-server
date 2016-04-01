@@ -27,22 +27,29 @@
 <div class="wrapper">
   <div id="main-content" class="inner-wrapper">
     <div class="row row-hero">
-      <h1>Welcome to your local asciinema content!</h1>
+      <h1>Welcome to your local asciinema!</h1>
       <p>Click on any video to replay its content</p>
     </div>
 
-    <div class="row">
-      <div id="player-container"></div>
+    <div id="dynamic-wrapper">
+      <div class="row">
+        <div id="player-container"></div>
+        <script>
+          asciinema_player.core.CreatePlayer('player-container', 'asciinema/foo.asciinema');
+        </script>
+      </div>
+      <div id="dynamic" class="row">
+      </div>
       <script>
-        asciinema_player.core.CreatePlayer('player-container', 'asciinema/foo.asciinema');
-        //asciinema_player.core.CreatePlayer(parent, asciicastURL, options)
+        asciinema_player.core.CreatePlayer(document.getElementById("dynamic"), 'asciinema/bar.asciinema', {"poster": "data:text/plain,I'm regular \u001b[1;32mI'm bold green\u001b[3BI'm 3 lines down\nff",
+        'title':"foo", 'fontSize': 'big'})
       </script>
-    </div>
-    <div class="row">
-      <div id="player-container2"></div>
-      <script>
-        asciinema_player.core.CreatePlayer('player-container2', 'asciinema/bar.asciinema');
-      </script>
+      <div class="row">
+        <div id="player-container2" poster="data:text/plain,this will be printed as poster\n\rthis in second line"></div>
+        <script>
+          asciinema_player.core.CreatePlayer('player-container2', 'asciinema/bar.asciinema');
+        </script>
+      </div>
     </div>
   </div>
 </div>
