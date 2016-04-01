@@ -1,5 +1,7 @@
 var debug = require('debug')('asciinema-local-server:app');
 var express = require('express');
+var fs = require('fs');
+var ip = require('ip');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -63,5 +65,19 @@ app.on_socketconnection = function (socket) {
   debug('A new session has connected, sending ' + filescan.getAsciinemaFiles());
   socket.emit('new asciifiles', filescan.getAsciinemaFiles());
 };
+
+// write IP file for client to pick it up
+var ipFilePath;
+if (process.env.SNAP_DATA) {
+  ipFilePath = process.env.SNAP_DATA;
+} else {
+  ipFilePath = '/tmp';
+}
+
+fs.writeFile(path.join(ipFilePath, 'server_ip'), ip.address(), function (err) {
+  if (err) {
+    return debug(err);
+  }
+});
 
 module.exports = app;
