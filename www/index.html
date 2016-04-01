@@ -7,6 +7,13 @@
   <script src="javascripts/socket.io.js"></script>
   <script>
      var socket = io();
+
+     // first, check if we are on the home page or a specific asciinema file
+     requestedFile = '';
+     if (window.location.href.endsWith('.asciinema')) {
+       requestedFile = window.location.pathname.slice(1);
+     }
+
      socket.on('new asciifiles', function (videos) {
        var rootElem = document.querySelector("#dynamic-wrapper");
        // clear current elements
@@ -15,7 +22,15 @@
        }
 
        // create all new nodes
-       videos.forEach(function(video) {
+       var videoDisplayed = false;
+       videos.forEach(function (video) {
+
+          // only show selected videos
+         if (requestedFile && video.filename !== requestedFile) {
+           return;
+         }
+
+         videoDisplayed = true;
          var node = document.createElement('div');
          node.className = 'row';
          rootElem.appendChild(node);
