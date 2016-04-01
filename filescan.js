@@ -66,6 +66,8 @@ setInterval(function () {
   debug('Checking for asciinema files');
   fs.readdir(asciinemaDir, getAsciinemaFiles);
 }, 10000);
+fs.readdir(asciinemaDir, getAsciinemaFiles);
+
 
 exports.getAsciinemaFiles = function () {
   return asciifiles;
