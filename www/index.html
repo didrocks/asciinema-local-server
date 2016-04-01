@@ -41,6 +41,20 @@
          asciinema_player.core.CreatePlayer(node, 'asciinema/' + video.filename, {"poster": titleInfos,
          'title': video.title, 'fontSize': 'medium'});
        })
+
+       // if no video found, tell it so
+       var instructions =  "Here are all videos that you recorded on this device";
+       if (!videoDisplayed) {
+         if (requestedFile) {
+           instructions = "No video content matching " + requestedFile + " has been found";
+         } else {
+           instructions = "No video content has been recorded on this device";
+         }
+       } else if (requestedFile) {
+         instructions = "";
+       }
+       document.querySelector("#video-instructions").innerHTML = instructions;
+
      });
   </script>
 </head>
@@ -60,7 +74,7 @@
   <div id="main-content" class="inner-wrapper">
     <div class="row row-hero">
       <h1>Welcome to your local asciinema!</h1>
-      <p>Click on any video to replay its content</p>
+      <p id="video-instructions"></p>
     </div>
 
     <div id="dynamic-wrapper">
