@@ -40,6 +40,14 @@
          ];
          asciinema_player.core.CreatePlayer(node, 'asciinema/' + video.filename, {"poster": titleInfos,
          'title': video.title, 'fontSize': 'medium'});
+
+         var paragraph = document.createElement('p');
+         var nodeLink = document.createElement('a');
+         nodeLink.href = window.location.origin + "/" + video.filename;
+         nodeLink.text = 'Direct link to "' + video.title + '"';
+         nodeLink.className = "align-center";
+         paragraph.appendChild(nodeLink);
+         node.appendChild(paragraph);
        })
 
        // if no video found, tell it so
