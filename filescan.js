@@ -10,10 +10,19 @@ var asciifileNames = [];
 // check regularly the ubuntu user directory which can contain asciinema files
 var asciinemaDir;
 try {
-  asciinemaDir = process.env.SNAP_USER_DATA.replace('/root', '/home/ubuntu');
+  asciinemaDir = path.join(process.env.SNAP_USER_DATA, 'records');
 }
 catch (ex) {
   asciinemaDir = process.cwd();
+}
+
+// create the directory as writable for any user
+if (!fs.existsSync(asciinemaDir)) {
+  fs.mkdirSync(asciinemaDir, 0777, function (err) {
+    if (err) {
+      throw err;
+    }
+  });
 }
 
 var getAsciinemaFiles = function (err, files) {
