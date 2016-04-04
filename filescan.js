@@ -10,7 +10,7 @@ var asciifileNames = [];
 // check regularly the ubuntu user directory which can contain asciinema files
 var asciinemaDir;
 try {
-  asciinemaDir = path.join(process.env.SNAP_USER_DATA, 'records');
+  asciinemaDir = path.join(process.env.SNAP_DATA, 'records');
 }
 catch (ex) {
   asciinemaDir = process.cwd();
