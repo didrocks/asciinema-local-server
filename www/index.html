@@ -51,12 +51,13 @@
        })
 
        // if no video found, tell it so
-       var instructions =  "Here are all videos that you recorded on this Ubuntu Core machine";
+       var command = "terminal-recorder-demo.record-terminal";
+       var instructions =  "Here are all videos that you recorded on this Ubuntu Core machine. Start recording some via <pre>" + command + "</pre>";
        if (!videoDisplayed) {
          if (requestedFile) {
            instructions = "No video content matching " + requestedFile + " has been found";
          } else {
-           instructions = "No video content has been recorded on this Ubuntu Core machine yet!";
+           instructions = "No video content has been recorded on this Ubuntu Core machine yet! Start recording some via <pre>" + command + "</pre>";
          }
        } else if (requestedFile) {
          instructions = "";
