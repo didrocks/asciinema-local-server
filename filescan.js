@@ -23,6 +23,9 @@ if (!fs.existsSync(asciinemaDir)) {
       throw err;
     }
   });
+
+  // reoverride due to mask
+  fs.chmodSync(asciinemaDir, 0777);
 }
 
 var getAsciinemaFiles = function (err, files) {
