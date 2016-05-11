@@ -7,7 +7,7 @@ const ASCIINEMA_SUFFIX = '.asciinema';
 var asciifiles = [];
 var asciifileNames = [];
 
-// check regularly the ubuntu user directory which can contain asciinema files
+// check regularly the user directory which can contain asciinema files
 var asciinemaDir;
 try {
   asciinemaDir = path.join(process.env.SNAP_DATA, 'records');
